@@ -8,10 +8,12 @@ import { Employee } from '../../domain/models/employee.model';
   providedIn: 'root',
 })
 export class EmployeeService {
+  private API_BASE = 'employees/rest/api/v1/';
+
   constructor(private httpClient: HttpClient) {}
 
   getEmployees$(): Observable<Employee[]> {
-    return this.httpClient.get<Employee[]>('api/v1/employees').pipe(
+    return this.httpClient.get<Employee[]>(`${this.API_BASE}employees`).pipe(
       map((resp) => resp['data']),
       map((data) => {
         return data.map((employee) => {

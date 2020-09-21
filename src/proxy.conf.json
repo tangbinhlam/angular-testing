@@ -1,8 +1,11 @@
 {
-  "/api/v1/*": {
+  "/employees/rest/api/v1/*": {
     "target": "ttp://dummy.restapiexample.com",
     "secure": false,
     "logLevel": "debug",
-    "changeOrigin": true
+    "changeOrigin": true,
+    "pathRewrite": {
+      "/employees/rest": ""
+    }
   }
 }

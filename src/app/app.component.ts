@@ -8,12 +8,6 @@ import { Employee } from './domain/models/employee.model';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
 })
-export class AppComponent implements OnInit {
+export class AppComponent {
   title = 'example';
-  employees$: Observable<Employee[]>;
-  constructor(private service: EmployeeService) {}
-
-  ngOnInit() {
-    this.employees$ = this.service.getEmployees$();
-  }
 }
