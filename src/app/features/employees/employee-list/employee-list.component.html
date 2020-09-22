@@ -1,0 +1,26 @@
+<h1>Employee List</h1>
+<form [formGroup]="searchForm">
+  <div class="form-group">
+    <label for="searchName">Search Name</label>
+    <input id="searchName" class="form-control" formControlName="searchText" type="text">
+  </div>
+  <button type="submit" (click)="onSearch()" class="btn btn-primary">Search</button>
+</form>
+<div *ngIf="employees$ | async as employees">
+  <table class="table">
+    <thead class="thead-dark">
+      <th scope="col">#</th>
+      <th scope="col">Name</th>
+      <th scope="col">Salary</th>
+      <th scope="col">Age</th>
+    </thead>
+    <tbody>
+      <tr *ngFor="let employee of employees">
+        <th scope="row">{{employee.id}}</th>
+        <td>{{employee.name}}</td>
+        <td>{{employee.salary}}</td>
+        <td>{{employee.age}}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
