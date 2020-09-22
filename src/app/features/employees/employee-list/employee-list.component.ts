@@ -1,14 +1,13 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { BehaviorSubject, combineLatest, Observable } from 'rxjs';
 import {
-  combineAll,
-  debounceTime,
-  filter,
-  map,
-  switchMap,
-  tap,
-} from 'rxjs/operators';
+  BehaviorSubject,
+  combineLatest,
+  Observable,
+  Subject,
+  Subscription,
+} from 'rxjs';
+import { debounceTime, map, takeUntil, tap } from 'rxjs/operators';
 import { EmployeeService } from 'src/app/core/services/employee.service';
 import { Employee } from 'src/app/domain/models/employee.model';
 
@@ -17,11 +16,12 @@ import { Employee } from 'src/app/domain/models/employee.model';
   templateUrl: './employee-list.component.html',
   styleUrls: ['./employee-list.component.css'],
 })
-export class EmployeeListComponent implements OnInit {
+export class EmployeeListComponent implements OnInit, AfterViewInit, OnDestroy {
   employees$: Observable<Employee[]>;
   private searchName = new BehaviorSubject('');
   searchName$ = this.searchName.asObservable();
   searchForm: FormGroup;
+  unsubscribe$: Subject<void> = new Subject();
 
   constructor(
     private employeeService: EmployeeService,
@@ -46,5 +46,17 @@ export class EmployeeListComponent implements OnInit {
 
   onSearch() {
     this.searchName.next(this.searchForm.value['searchText']);
+  }
+
+  ngAfterViewInit() {
+    this.searchForm
+      .get('searchText')
+      .valueChanges.pipe(debounceTime(1000), takeUntil(this.unsubscribe$))
+      .subscribe((value) => this.searchName.next(value));
+  }
+
+  ngOnDestroy(): void {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 }
