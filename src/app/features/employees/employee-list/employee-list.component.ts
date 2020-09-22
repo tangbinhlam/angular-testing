@@ -55,6 +55,10 @@ export class EmployeeListComponent implements OnInit, AfterViewInit, OnDestroy {
       .subscribe((value) => this.searchName.next(value));
   }
 
+  trackById(employee: Employee) {
+    return employee.id;
+  }
+
   ngOnDestroy(): void {
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
