@@ -1,10 +1,10 @@
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-
-import { EmployeeListComponent } from '../employees/employee-list/employee-list.component';
-import { EmployeeEditComponent } from '../employees/employee-edit/employee-edit.component';
+import { NgModule } from '@angular/core';
+import { ReactiveFormsModule } from '@angular/forms';
 import { RouterModule, Routes } from '@angular/router';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { EmployeeEditComponent } from '../employees/employee-edit/employee-edit.component';
+import { EmployeeListComponent } from '../employees/employee-list/employee-list.component';
+import { RatePipe } from './pipes/rate.pipe';
 
 const routes: Routes = [
   {
@@ -20,7 +20,7 @@ const routes: Routes = [
   },
 ];
 @NgModule({
-  declarations: [EmployeeListComponent, EmployeeEditComponent],
+  declarations: [EmployeeListComponent, EmployeeEditComponent, RatePipe],
   imports: [CommonModule, RouterModule.forChild(routes), ReactiveFormsModule],
 })
 export class EmployeesModule {}
