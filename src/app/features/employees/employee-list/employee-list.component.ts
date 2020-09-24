@@ -18,7 +18,7 @@ import { Employee } from 'src/app/domain/models/employee.model';
 })
 export class EmployeeListComponent implements OnInit, AfterViewInit, OnDestroy {
   employees$: Observable<Employee[]>;
-  private searchName = new BehaviorSubject('');
+  searchName = new BehaviorSubject('');
   searchName$ = this.searchName.asObservable();
   searchForm: FormGroup;
   unsubscribe$: Subject<void> = new Subject();
