@@ -70,7 +70,7 @@ describe('EmployeeListComponent', () => {
         );
       }));
 
-      it('should filter employees when searchText change correctly', async(() => {
+      it('should filter correctly employees when searchText changed', async(() => {
         // Given
         component.ngOnInit();
         // Then
@@ -89,6 +89,23 @@ describe('EmployeeListComponent', () => {
           }),
         );
       }));
+
+      describe('should return all employees when searchText is', () => {
+        [null, ''].forEach((searchText) => {
+          it(searchText ? null : `empty`, () => {
+            // Given
+            component.ngOnInit();
+            // Then
+            component.searchName.next(searchText);
+            expect(employeeService.getEmployees$).toHaveBeenCalledTimes(1);
+            expect(
+              component.employees$.subscribe((value) => {
+                expect(value).toEqual(mockEmployees);
+              }),
+            );
+          });
+        });
+      });
 
       it('trackById should return right id', () => {
         // Gien

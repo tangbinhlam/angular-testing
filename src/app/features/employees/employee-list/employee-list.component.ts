@@ -38,7 +38,8 @@ export class EmployeeListComponent implements OnInit, AfterViewInit, OnDestroy {
     ).pipe(
       map(([employees, name]) => {
         return employees.filter(
-          (employee) => name === '' || employee.name.search(name) !== -1,
+          (employee) =>
+            name === null || name === '' || employee.name.search(name) !== -1,
         );
       }),
     );
