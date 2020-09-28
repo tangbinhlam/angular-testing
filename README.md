@@ -1,27 +1,22 @@
-# Example
+# Angular Test
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 10.0.8.
 
 ## Development server
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`.
 
-## Code scaffolding
+## Write Test:
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+For Service, Component ( Serprate UT and IT)
 
-## Build
+## Resolve Cross-Origin Resource Sharing (CORS)
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
+Using proxy to redirect to diffence domain API
+In committed: https://github.com/tangbinhlam/angular-testing/commit/da4e42472b4b12348fb6271d61730dcfe60a76c5
 
-## Running unit tests
-
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+## Apply Sonar:
+Follow : https://sajidrahman.github.io/2018-06-06-install-sonar-on-macosx/
+Then start Sonar server by: Run /usr/local/opt/sonarqube/bin/sonar console
+Check sonar server in: http://localhost:9000/
+Then Run " npm run sonar"
