@@ -9,11 +9,11 @@
 <div *ngIf="employees$ | async as employees">
   <table class="table">
     <thead class="thead-dark">
-      <th scope="col">#</th>
-      <th scope="col">Name</th>
-      <th scope="col">Salary</th>
-      <th scope="col">Rate</th>
-      <th scope="col">Age</th>
+      <th id="headerNumber" cope="col">#</th>
+      <th id="headerName" scope="col">Name</th>
+      <th id="headerSalary" scope="col">Salary</th>
+      <th id="headerRate" scope="col">Rate</th>
+      <th id="headerAge" scope="col">Age</th>
     </thead>
     <tbody>
       <tr *ngFor="let employee of employees; trackBy:trackById">

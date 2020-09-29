@@ -1,9 +1,17 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { DebugElement } from '@angular/core';
+import {
+  async,
+  inject,
+  ComponentFixture,
+  TestBed,
+} from '@angular/core/testing';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
+import { By } from '@angular/platform-browser';
 import { of } from 'rxjs';
 import { EmployeeService } from 'src/app/core/services/employee.service';
 import { Employee } from 'src/app/domain/models/employee.model';
+import { RatePipe } from '../pipes/rate.pipe';
 
 import { EmployeeListComponent } from './employee-list.component';
 
@@ -141,9 +149,16 @@ describe('EmployeeListComponent', () => {
 
     beforeEach(async(() => {
       TestBed.configureTestingModule({
-        declarations: [EmployeeListComponent],
+        declarations: [EmployeeListComponent, RatePipe],
         imports: [HttpClientTestingModule, ReactiveFormsModule],
-        providers: [EmployeeService],
+        providers: [
+          {
+            provide: EmployeeService,
+            useValue: {
+              getEmployees$: () => of(),
+            },
+          },
+        ],
       }).compileComponents();
     }));
 
@@ -155,6 +170,113 @@ describe('EmployeeListComponent', () => {
 
     it('should create', () => {
       expect(component).toBeTruthy();
+    });
+
+    it('should display header correctly', () => {
+      // When
+      const headerLabel: DebugElement = fixture.debugElement.query(
+        By.css('h1'),
+      );
+      // Then
+      expect(headerLabel.nativeElement.textContent.trim()).toEqual(
+        'Employee List',
+      );
+    });
+
+    it('should display search text name correctly', () => {
+      // When
+      const searchTextLabel: DebugElement = fixture.debugElement.query(
+        By.css('div.form-group label'),
+      );
+      // Then
+      expect(searchTextLabel.nativeElement.textContent.trim()).toEqual(
+        'Search Name',
+      );
+    });
+
+    it('should call onSearch when user clicks to Search button', () => {
+      // Given
+      const button: DebugElement = fixture.debugElement.query(
+        By.css('form button'),
+      );
+      spyOn(component, 'onSearch').and.callFake(() => {});
+      // When
+      button.nativeElement.click();
+      fixture.detectChanges();
+      // Then
+      expect(component.onSearch).toHaveBeenCalledTimes(1);
+      expect(component.onSearch).toHaveBeenCalledWith();
+    });
+
+    describe('Render table ', () => {
+      it('should not render with empty employee', async(
+        inject([EmployeeService], (employeeService) => {
+          // Given
+          spyOn(employeeService, 'getEmployees$').and.returnValue(of());
+          // When
+          component.ngOnInit();
+          fixture.detectChanges();
+          // Then
+          const table: DebugElement = fixture.debugElement.query(
+            By.css('div table'),
+          );
+          expect(table).toBeFalsy();
+        }),
+      ));
+
+      describe('should render', () => {
+        beforeEach(async(
+          inject([EmployeeService], (employeeService) => {
+            // Given
+            spyOn(employeeService, 'getEmployees$').and.returnValue(
+              of(mockEmployees),
+            );
+            component.ngOnInit();
+            fixture.detectChanges();
+          }),
+        ));
+
+        it('table', () => {
+          const table: DebugElement = fixture.debugElement.query(
+            By.css('div table'),
+          );
+          expect(table).toBeTruthy();
+        });
+
+        [
+          {
+            column: 'Number',
+            expectedValue: '#',
+          },
+          {
+            column: 'Name',
+            expectedValue: 'Name',
+          },
+          {
+            column: 'Salary',
+            expectedValue: 'Salary',
+          },
+          {
+            column: 'Rate',
+            expectedValue: 'Rate',
+          },
+          {
+            column: 'Age',
+            expectedValue: 'Age',
+          },
+        ].forEach((testCase: { column: String; expectedValue: String }) => {
+          it(`column ${testCase.column} should label with '${testCase.expectedValue}'`, () => {
+            // When
+            const column: DebugElement = fixture.debugElement.query(
+              By.css(`table thead th#header${testCase.column}`),
+            );
+            // Then
+            expect(column.nativeElement.textContent).toEqual(
+              testCase.expectedValue,
+            );
+          });
+        });
+      });
     });
   });
 });
