@@ -5,6 +5,8 @@ import {
   inject,
   ComponentFixture,
   TestBed,
+  tick,
+  fakeAsync,
 } from '@angular/core/testing';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
@@ -278,5 +280,20 @@ describe('EmployeeListComponent', () => {
         });
       });
     });
+
+    it('ngAfterViewInit should trigger event next search name when searchText changed', fakeAsync(() => {
+      // Given
+      spyOn(component.searchName, 'next').and.callThrough();
+      component.searchForm.get('searchText').setValue('Lam Tang');
+      // When
+      tick(1000);
+      fixture.detectChanges();
+      // Then
+      expect(component.searchName.next).toHaveBeenCalled();
+      expect(component.searchName.next).toHaveBeenCalledWith('Lam Tang');
+      component.searchName$.subscribe((searchText) => {
+        expect(searchText).toEqual('Lam Tang');
+      });
+    }));
   });
 });
