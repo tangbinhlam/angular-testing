@@ -20,3 +20,5 @@ Follow : https://sajidrahman.github.io/2018-06-06-install-sonar-on-macosx/
 Then start Sonar server by: Run /usr/local/opt/sonarqube/bin/sonar console
 Check sonar server in: http://localhost:9000/
 Then Run " npm run sonar"
+
+## Integrate Jest into an Angular application and library
